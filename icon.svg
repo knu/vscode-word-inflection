@@ -1,0 +1,39 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgV3j6c5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1a2a"/>
+      <stop offset="1" stop-color="#14243a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="128" height="128" rx="14" fill="url(#bgV3j6c5)"/>
+
+  <g transform="translate(64, 64)">
+    <g transform="rotate(10)">
+      <path d="M-18,-56
+               A60,60 0 0,1 58,-10
+               A50,50 0 0,0 -8,-48
+               Q-10,-53 -18,-56
+               Z" fill="#60a5fa"/>
+    </g>
+
+    <g transform="rotate(130)">
+      <path d="M-18,-56
+               A60,60 0 0,1 58,-10
+               A50,50 0 0,0 -8,-48
+               Q-10,-53 -18,-56
+               Z" fill="#38bdf8"/>
+    </g>
+
+    <g transform="rotate(250)">
+      <path d="M-18,-56
+               A60,60 0 0,1 58,-10
+               A50,50 0 0,0 -8,-48
+               Q-10,-53 -18,-56
+               Z" fill="#a5b4fc"/>
+    </g>
+  </g>
+
+  <!-- tangerine -->
+  <text x="69" y="73" text-anchor="middle" font-family="Monaco, monospace" font-size="32" fill="#fdba74">WoRD_</text>
+</svg>

@@ -1,0 +1,148 @@
+{
+  "name": "word-inflection",
+  "displayName": "Word Inflection",
+  "description": "Cycle and convert word naming cases: camelCase, snake_case, PascalCase, kebab-case, and more.",
+  "version": "0.1.0",
+  "publisher": "knu",
+  "author": "Akinori Musha",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knu/vscode-word-inflection"
+  },
+  "bugs": {
+    "url": "https://github.com/knu/vscode-word-inflection/issues"
+  },
+  "homepage": "https://github.com/knu/vscode-word-inflection#readme",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "word inflection",
+    "inflection",
+    "word",
+    "case",
+    "cycle",
+    "naming",
+    "convert",
+    "transform",
+    "camelCase",
+    "snake_case",
+    "PascalCase",
+    "kebab-case",
+    "SCREAMING_SNAKE_CASE",
+    "emacs"
+  ],
+  "icon": "icon.svg",
+  "main": "./out/extension.js",
+  "browser": "./dist/web/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "stringInflection.cycle",
+        "title": "Word Inflection: Cycle (All Styles)"
+      },
+      {
+        "command": "stringInflection.cycleRuby",
+        "title": "Word Inflection: Cycle (Ruby Style)"
+      },
+      {
+        "command": "stringInflection.cyclePython",
+        "title": "Word Inflection: Cycle (Python Style)"
+      },
+      {
+        "command": "stringInflection.cycleElixir",
+        "title": "Word Inflection: Cycle (Elixir Style)"
+      },
+      {
+        "command": "stringInflection.cycleJava",
+        "title": "Word Inflection: Cycle (Java Style)"
+      },
+      {
+        "command": "stringInflection.toSnakeCase",
+        "title": "Word Inflection: To snake_case"
+      },
+      {
+        "command": "stringInflection.toScreamingSnakeCase",
+        "title": "Word Inflection: To SCREAMING_SNAKE_CASE"
+      },
+      {
+        "command": "stringInflection.toPascalCase",
+        "title": "Word Inflection: To PascalCase"
+      },
+      {
+        "command": "stringInflection.toCamelCase",
+        "title": "Word Inflection: To camelCase"
+      },
+      {
+        "command": "stringInflection.toKebabCase",
+        "title": "Word Inflection: To kebab-case"
+      },
+      {
+        "command": "stringInflection.toCapitalSnakeCase",
+        "title": "Word Inflection: To Capital_Snake_Case"
+      },
+      {
+        "command": "stringInflection.toggle",
+        "title": "Word Inflection: Toggle"
+      },
+      {
+        "command": "stringInflection.cycleSnakeKebab",
+        "title": "Word Inflection: Cycle (snake_case ⇔ kebab-case)"
+      },
+      {
+        "command": "stringInflection.cycleCamelCase",
+        "title": "Word Inflection: Cycle (PascalCase ⇔ camelCase)"
+      },
+      {
+        "command": "stringInflection.wordPartCapitalize",
+        "title": "Word Inflection: Word Part Capitalize"
+      },
+      {
+        "command": "stringInflection.wordPartUpcase",
+        "title": "Word Inflection: Word Part Upcase"
+      },
+      {
+        "command": "stringInflection.wordPartDowncase",
+        "title": "Word Inflection: Word Part Downcase"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile && npm run compile-web",
+    "compile": "tsc -p ./",
+    "compile-web": "esbuild ./src/extension.ts --bundle --outfile=dist/web/extension.js --external:vscode --format=cjs --platform=browser",
+    "watch": "tsc -watch -p ./",
+    "watch-web": "npm run compile-web -- --sourcemap --watch",
+    "lint": "eslint src --ext ts",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.ts\" \"*.json\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"*.json\"",
+    "test": "vscode-test",
+    "test-web": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=.",
+    "package": "vsce package",
+    "publish": "npm run publish:vsce && npm run publish:ovsx",
+    "publish:vsce": "vsce publish --packagePath \"$(npm pkg get name version | jq -rs '.[0] | \"\\(.name)-\\(.version).vsix\"')\"",
+    "publish:ovsx": "ovsx publish --packagePath \"$(npm pkg get name version | jq -rs '.[0] | \"\\(.name)-\\(.version).vsix\"')\""
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.0.0",
+    "@types/vscode": "^1.95.0",
+    "@typescript-eslint/eslint-plugin": "^8.51.0",
+    "@typescript-eslint/parser": "^8.51.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/test-web": "^0.0.77",
+    "@vscode/vsce": "^3.7.1",
+    "esbuild": "^0.27.2",
+    "ovsx": "^0.10.7",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.51.0"
+  }
+}
