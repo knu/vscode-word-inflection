@@ -15,6 +15,8 @@ Convert the word at cursor (or selected text) between the following naming conve
 - `kebab-case` (a.k.a. `lisp-case`)
 - `Capital_Snake_Case`
 
+Unicode letters are supported in case conversions and detection.
+
 ## Commands
 
 ### Cycle Commands
@@ -48,7 +50,7 @@ Convert directly to a specific naming convention:
 
 ### Word Part Commands
 
-Transform word parts (subwords).  These commands operate on the text from the cursor position to the next word part boundary (using VS Code's `cursorWordPartRight` logic).
+Transform word parts (subwords).  These commands follow VS Code's WordPart navigation behavior (via `cursorWordPartRight`/`cursorWordPartRightSelect`).  They also search forward when the cursor is not on a word part and move to the end of the transformed part, matching Emacs `subword-capitalize`, `subword-upcase`, and `subword-downcase`.
 
 - `Word Inflection: Word Part Capitalize` - Capitalize the word part (e.g., `NICE|Symbol` → `Nice|Symbol`)
 - `Word Inflection: Word Part Upcase` - Upcase the word part (e.g., `nice|Symbol` → `NICE|Symbol`)
