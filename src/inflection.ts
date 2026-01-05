@@ -8,8 +8,8 @@
  */
 export function toSnakeCase(str: string): string {
   return str
-    .replace(/([a-z\d])([A-Z])/g, "$1_$2")
-    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1_$2")
+    .replace(/([\p{Ll}\p{Lo}\p{Nd}])([\p{Lu}])/gu, "$1_$2")
+    .replace(/([\p{Lu}]+)([\p{Lu}][\p{Ll}\p{Lo}])/gu, "$1_$2")
     .replace(/[-_]+/g, "_")
     .toLowerCase();
 }
@@ -51,7 +51,9 @@ export function toCapitalSnakeCase(str: string): string {
 }
 
 export function capitalize(str: string): string {
-  return str.length == 0 ? "" : str[0].toUpperCase() + str.slice(1).toLowerCase();
+  if (str.length === 0) return "";
+  const [first, ...rest] = Array.from(str);
+  return first.toUpperCase() + rest.join("").toLowerCase();
 }
 
 export function upcase(str: string): string {
@@ -65,23 +67,23 @@ export function downcase(str: string): string {
 // Detection functions
 
 export function isSymbol(str: string): boolean {
-  return /^[a-z\d]+$/.test(str);
+  return /^[\p{Ll}\p{Lo}\p{Nd}]+$/u.test(str);
 }
 
 export function isSnakeCase(str: string): boolean {
-  return /^[a-z\d_]+$/.test(str);
+  return /^[\p{Ll}\p{Lo}\p{Nd}_]+$/u.test(str);
 }
 
 export function isScreamingSnakeCase(str: string): boolean {
-  return /^[A-Z\d_]+$/.test(str);
+  return /^[\p{Lu}\p{Lo}\p{Nd}_]+$/u.test(str);
 }
 
 export function isPascalCase(str: string): boolean {
-  return /[a-z]/.test(str) && /^[A-Z][a-zA-Z\d]*$/.test(str);
+  return /[\p{Ll}]/u.test(str) && /^[\p{Lu}][\p{L}\p{Nd}]*$/u.test(str);
 }
 
 export function isCamelCase(str: string): boolean {
-  return /[A-Z]/.test(str) && /^[a-z][a-zA-Z\d]*$/.test(str);
+  return /[\p{Lu}]/u.test(str) && /^[\p{Ll}][\p{L}\p{Nd}]*$/u.test(str);
 }
 
 export function isKebabCase(str: string): boolean {
@@ -89,7 +91,7 @@ export function isKebabCase(str: string): boolean {
 }
 
 export function isCapitalSnakeCase(str: string): boolean {
-  return /_/.test(str) && /^[A-Z][a-zA-Z\d_]*$/.test(str);
+  return /_/.test(str) && /^[\p{Lu}][\p{L}\p{Nd}_]*$/u.test(str);
 }
 
 export type InflectionStyle = "all" | "ruby" | "python" | "elixir" | "java";
