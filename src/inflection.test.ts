@@ -58,6 +58,12 @@ suite("Inflection Test Suite", () => {
       assert.strictEqual(toSnakeCase("Foo"), "foo");
     });
 
+    test("handles non-ASCII letters", () => {
+      assert.strictEqual(toSnakeCase("FöoBar"), "föo_bar");
+      assert.strictEqual(toSnakeCase("İstanbulTest"), "i̇stanbul_test");
+      assert.strictEqual(toSnakeCase("日本語Test"), "日本語_test");
+    });
+
     test("handles numbers", () => {
       assert.strictEqual(toSnakeCase("foo2Bar"), "foo2_bar");
       assert.strictEqual(toSnakeCase("foo2bar"), "foo2bar");
@@ -83,6 +89,7 @@ suite("Inflection Test Suite", () => {
 
     test("handles single word", () => {
       assert.strictEqual(toPascalCase("foo"), "Foo");
+      assert.strictEqual(toPascalCase("日本語_test"), "日本語Test");
     });
   });
 
@@ -97,6 +104,7 @@ suite("Inflection Test Suite", () => {
     test("handles single word", () => {
       assert.strictEqual(toCamelCase("foo"), "foo");
       assert.strictEqual(toCamelCase("FOO"), "foo");
+      assert.strictEqual(toCamelCase("日本語_test"), "日本語Test");
     });
   });
 
@@ -125,16 +133,19 @@ suite("Inflection Test Suite", () => {
       assert.strictEqual(capitalize("FOO"), "Foo");
       assert.strictEqual(capitalize("fOO"), "Foo");
       assert.strictEqual(capitalize(""), "");
+      assert.strictEqual(capitalize("áBC"), "Ábc");
     });
 
     test("upcase", () => {
       assert.strictEqual(upcase("foo"), "FOO");
       assert.strictEqual(upcase("FooBar"), "FOOBAR");
+      assert.strictEqual(upcase("日本語"), "日本語");
     });
 
     test("downcase", () => {
       assert.strictEqual(downcase("FOO"), "foo");
       assert.strictEqual(downcase("FooBar"), "foobar");
+      assert.strictEqual(downcase("İSTANBUL"), "i̇stanbul");
     });
   });
 
@@ -144,6 +155,7 @@ suite("Inflection Test Suite", () => {
       assert.strictEqual(isSymbol("foo123"), true);
       assert.strictEqual(isSymbol("foo_bar"), false);
       assert.strictEqual(isSymbol("FooBar"), false);
+      assert.strictEqual(isSymbol("日本語"), true);
     });
 
     test("isSnakeCase", () => {
@@ -152,6 +164,7 @@ suite("Inflection Test Suite", () => {
       assert.strictEqual(isSnakeCase("foo_bar_baz"), true);
       assert.strictEqual(isSnakeCase("FooBar"), false);
       assert.strictEqual(isSnakeCase("foo-bar"), false);
+      assert.strictEqual(isSnakeCase("日本語_test"), true);
     });
 
     test("isScreamingSnakeCase", () => {
@@ -159,6 +172,7 @@ suite("Inflection Test Suite", () => {
       assert.strictEqual(isScreamingSnakeCase("FOO"), true);
       assert.strictEqual(isScreamingSnakeCase("foo_bar"), false);
       assert.strictEqual(isScreamingSnakeCase("FooBar"), false);
+      assert.strictEqual(isScreamingSnakeCase("日本語_TEST"), true);
     });
 
     test("isPascalCase", () => {
@@ -167,6 +181,7 @@ suite("Inflection Test Suite", () => {
       assert.strictEqual(isPascalCase("fooBar"), false);
       assert.strictEqual(isPascalCase("FOO"), false);
       assert.strictEqual(isPascalCase("foo"), false);
+      assert.strictEqual(isPascalCase("日本語Test"), false);
     });
 
     test("isCamelCase", () => {
@@ -175,6 +190,7 @@ suite("Inflection Test Suite", () => {
       assert.strictEqual(isCamelCase("FooBar"), false);
       assert.strictEqual(isCamelCase("foo"), false);
       assert.strictEqual(isCamelCase("foo_bar"), false);
+      assert.strictEqual(isCamelCase("日本語Test"), false);
     });
 
     test("isKebabCase", () => {
@@ -188,6 +204,7 @@ suite("Inflection Test Suite", () => {
       assert.strictEqual(isCapitalSnakeCase("Foo_Bar_Baz"), true);
       assert.strictEqual(isCapitalSnakeCase("foo_bar"), false);
       assert.strictEqual(isCapitalSnakeCase("FooBar"), false);
+      assert.strictEqual(isCapitalSnakeCase("日本語_Test"), false);
     });
   });
 
