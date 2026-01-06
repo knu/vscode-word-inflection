@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/knu/vscode-word-inflection/issues"
   },
-  "homepage": "https://github.com/knu/vscode-word-inflection#readme",
+  "homepage": "https://vscode-word-inflection.idaemons.org/",
   "engines": {
     "vscode": "^1.95.0"
   },
