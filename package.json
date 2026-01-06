@@ -2,7 +2,7 @@
   "name": "word-inflection",
   "displayName": "Word Inflection",
   "description": "Cycle and convert word naming cases: camelCase, snake_case, PascalCase, kebab-case, and more.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "knu",
   "author": "Akinori Musha",
   "license": "MIT",
