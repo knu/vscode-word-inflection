@@ -22,6 +22,20 @@ async function runCommandAndWait(document: vscode.TextDocument, command: string)
   await changed;
 }
 
+function assertSelections(
+  editor: vscode.TextEditor,
+  selections: Array<{ startLine: number; startCharacter: number; endLine: number; endCharacter: number }>
+) {
+  assert.strictEqual(editor.selections.length, selections.length);
+  selections.forEach(({ startLine, startCharacter, endLine, endCharacter }, index) => {
+    const selection = editor.selections[index];
+    assert.strictEqual(selection.start.line, startLine);
+    assert.strictEqual(selection.start.character, startCharacter);
+    assert.strictEqual(selection.end.line, endLine);
+    assert.strictEqual(selection.end.character, endCharacter);
+  });
+}
+
 suite("Extension commands", () => {
   suiteSetup(async () => {
     const extension = vscode.extensions.getExtension("knu.word-inflection");
@@ -207,6 +221,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, content.length);
         await vscode.commands.executeCommand("stringInflection.wordPartCapitalize");
         assert.strictEqual(editor.document.getText(), "Foo Bar-baz.Qux");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 0, endLine: 0, endCharacter: content.length }]);
       });
     });
 
@@ -216,6 +231,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, content.length);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "FOO_BAR BAZ-QUX");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 0, endLine: 0, endCharacter: content.length }]);
       });
     });
 
@@ -225,6 +241,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 1, 7);
         await vscode.commands.executeCommand("stringInflection.wordPartDowncase");
         assert.strictEqual(editor.document.getText(), "foo bar\nbaz-qux");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 0, endLine: 1, endCharacter: 7 }]);
       });
     });
   });
@@ -236,6 +253,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "  FOOBar");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 5, endLine: 0, endCharacter: 5 }]);
       });
     });
 
@@ -245,6 +263,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 3, 0, 3);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "Foo BARBaz");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 7, endLine: 0, endCharacter: 7 }]);
       });
     });
 
@@ -254,6 +273,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), ".FOOBar");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 4, endLine: 0, endCharacter: 4 }]);
       });
     });
 
@@ -263,6 +283,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "\nFOOBar");
+        assertSelections(editor, [{ startLine: 1, startCharacter: 3, endLine: 1, endCharacter: 3 }]);
       });
     });
 
@@ -272,6 +293,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartCapitalize");
         assert.strictEqual(editor.document.getText(), "!!!\nFooBar");
+        assertSelections(editor, [{ startLine: 1, startCharacter: 3, endLine: 1, endCharacter: 3 }]);
       });
     });
 
@@ -281,8 +303,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "!!!");
-        assert.strictEqual(editor.selection.active.line, 0);
-        assert.strictEqual(editor.selection.active.character, 0);
+        assertSelections(editor, [{ startLine: 0, startCharacter: 0, endLine: 0, endCharacter: 0 }]);
       });
     });
 
@@ -292,6 +313,20 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "1234 FOOBar");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 8, endLine: 0, endCharacter: 8 }]);
+      });
+    });
+
+    test("moves to next word after completing word end", async () => {
+      const content = "hello world";
+      await withEditor(content, async (editor) => {
+        editor.selection = new vscode.Selection(0, 0, 0, 0);
+        await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
+        await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
+        assert.strictEqual(editor.document.getText(), "HELLO WORLD");
+        assertSelections(editor, [
+          { startLine: 0, startCharacter: "HELLO WORLD".length, endLine: 0, endCharacter: "HELLO WORLD".length },
+        ]);
       });
     });
   });
@@ -303,6 +338,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartCapitalize");
         assert.strictEqual(editor.document.getText(), "FooBar");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 3, endLine: 0, endCharacter: 3 }]);
       });
     });
 
@@ -312,6 +348,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 3, 0, 3);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "fooBARBaz");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 6, endLine: 0, endCharacter: 6 }]);
       });
     });
 
@@ -321,6 +358,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "NAÏVETest");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 5, endLine: 0, endCharacter: 5 }]);
       });
     });
 
@@ -330,6 +368,14 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "日本語TEST");
+        assertSelections(editor, [
+          {
+            startLine: 0,
+            startCharacter: "日本語TEST".length,
+            endLine: 0,
+            endCharacter: "日本語TEST".length,
+          },
+        ]);
       });
     });
 
@@ -339,6 +385,9 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartDowncase");
         assert.strictEqual(editor.document.getText(), "i̇stanbulTest");
+        assertSelections(editor, [
+          { startLine: 0, startCharacter: "i̇stanbul".length, endLine: 0, endCharacter: "i̇stanbul".length },
+        ]);
       });
     });
 
@@ -348,6 +397,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartCapitalize");
         assert.strictEqual(editor.document.getText(), "ÁbcDef");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 3, endLine: 0, endCharacter: 3 }]);
       });
     });
 
@@ -357,6 +407,7 @@ suite("Extension commands", () => {
         editor.selection = new vscode.Selection(0, 0, 0, 0);
         await vscode.commands.executeCommand("stringInflection.wordPartDowncase");
         assert.strictEqual(editor.document.getText(), "äbcDef");
+        assertSelections(editor, [{ startLine: 0, startCharacter: 3, endLine: 0, endCharacter: 3 }]);
       });
     });
   });
@@ -368,6 +419,10 @@ suite("Extension commands", () => {
         editor.selections = [new vscode.Selection(0, 0, 0, 0), new vscode.Selection(0, 7, 0, 7)];
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "FOOBar BAZQux");
+        assertSelections(editor, [
+          { startLine: 0, startCharacter: 3, endLine: 0, endCharacter: 3 },
+          { startLine: 0, startCharacter: 10, endLine: 0, endCharacter: 10 },
+        ]);
       });
     });
 
@@ -377,6 +432,10 @@ suite("Extension commands", () => {
         editor.selections = [new vscode.Selection(0, 0, 0, 0), new vscode.Selection(0, 9, 0, 9)];
         await vscode.commands.executeCommand("stringInflection.wordPartCapitalize");
         assert.strictEqual(editor.document.getText(), "  FooBar   BazQux");
+        assertSelections(editor, [
+          { startLine: 0, startCharacter: 5, endLine: 0, endCharacter: 5 },
+          { startLine: 0, startCharacter: 14, endLine: 0, endCharacter: 14 },
+        ]);
       });
     });
 
@@ -386,6 +445,10 @@ suite("Extension commands", () => {
         editor.selections = [new vscode.Selection(0, 0, 0, 6), new vscode.Selection(0, 7, 0, 7)];
         await vscode.commands.executeCommand("stringInflection.wordPartUpcase");
         assert.strictEqual(editor.document.getText(), "FOOBAR bazQux");
+        assertSelections(editor, [
+          { startLine: 0, startCharacter: 0, endLine: 0, endCharacter: 6 },
+          { startLine: 0, startCharacter: 7, endLine: 0, endCharacter: 7 },
+        ]);
       });
     });
   });

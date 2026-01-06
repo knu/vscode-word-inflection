@@ -174,6 +174,7 @@ function createWordPartCommand(transform: (text: string) => string) {
 
     const edits = collectEdits(document, newSelections, (text) => (hasLetter(text) ? transform(text) : text));
     await applyEdits(editor, edits);
+    editor.selections = editor.selections.map((selection) => new vscode.Selection(selection.active, selection.active));
   };
 }
 
