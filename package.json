@@ -37,7 +37,7 @@
     "SCREAMING_SNAKE_CASE",
     "emacs"
   ],
-  "icon": "icon.svg",
+  "icon": "icon.png",
   "main": "./out/extension.js",
   "browser": "./dist/web/extension.js",
   "contributes": {
