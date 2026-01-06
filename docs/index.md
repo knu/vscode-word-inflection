@@ -14,13 +14,13 @@ Emacs.
 ## Extension Listings
 
 - **Open VSX Registry**
-  https://open-vsx.org/extension/knu/word-inflection
+  [https://open-vsx.org/extension/knu/word-inflection](https://open-vsx.org/extension/knu/word-inflection)
 
 - **VS Code Marketplace**
-  https://marketplace.visualstudio.com/items?itemName=knu.word-inflection
+  [https://marketplace.visualstudio.com/items?itemName=knu.word-inflection](https://marketplace.visualstudio.com/items?itemName=knu.word-inflection)
 
 - **GitHub Repository**
-  https://github.com/knu/vscode-word-inflection
+  [https://github.com/knu/vscode-word-inflection](https://github.com/knu/vscode-word-inflection)
 
 ---
 
