@@ -4,6 +4,11 @@ Convert symbol names between different naming conventions.
 
 This is a port of [string-inflection](https://github.com/akicho8/string-inflection) for Emacs.
 
+## Install
+
+- Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=knu.word-inflection
+- Open VSX: https://open-vsx.org/extension/knu/word-inflection
+
 ## Features
 
 Convert the word at cursor (or selected text) between the following naming conventions:
@@ -16,6 +21,12 @@ Convert the word at cursor (or selected text) between the following naming conve
 - `Capital_Snake_Case`
 
 Unicode letters are supported in case conversions and detection.
+
+Additional capabilities:
+
+- Cycle through language-specific naming conventions
+- Directly convert to a specific naming convention
+- Transform word parts (subwords) based on VS Code's word-part navigation
 
 ## Commands
 
