@@ -15,7 +15,8 @@
   },
   "homepage": "https://vscode-word-inflection.idaemons.org/",
   "engines": {
-    "vscode": "^1.95.0"
+    "vscode": "^1.95.0",
+    "node": ">=20"
   },
   "categories": [
     "Formatters",
@@ -135,7 +136,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^24.0.0",
+    "@types/node": "^20.0.0",
     "@types/vscode": "^1.95.0",
     "@typescript-eslint/eslint-plugin": "^8.51.0",
     "@typescript-eslint/parser": "^8.51.0",
